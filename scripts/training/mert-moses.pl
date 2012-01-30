@@ -1301,7 +1301,7 @@ sub submit_or_exec {
   }
 }
 
-sub create_extractor_script()
+sub create_extractor_script
 {
   my ($cmd, $outdir) = @_;
   my $script_path = File::Spec->catfile($outdir, "extractor.sh");
