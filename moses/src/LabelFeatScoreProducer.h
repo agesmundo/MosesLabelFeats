@@ -18,8 +18,8 @@ public:
 	LabelFeatScoreProducer(ScoreIndexManager &scoreIndexManager);
 
 
-  std::string GetScoreProducerDescription(unsigned) const;
-  std::string GetScoreProducerWeightShortName(unsigned) const;
+  std::string GetScoreProducerDescription() const;
+  std::string GetScoreProducerWeightShortName() const;
   size_t GetNumScoreComponents() const;
 
   virtual void Evaluate(

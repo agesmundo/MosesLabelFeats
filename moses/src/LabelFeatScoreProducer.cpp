@@ -24,14 +24,14 @@ LabelFeatScoreProducer::LabelFeatScoreProducer(ScoreIndexManager &scoreIndexMana
 //  scoreIndexManager.AddScoreProducer(this);
 //}
 
-std::string LabelFeatScoreProducer::GetScoreProducerDescription(unsigned) const
+std::string LabelFeatScoreProducer::GetScoreProducerDescription() const
 {
-  return "ConnectivesLabels";
+  return "LabelFeat";
 }
 
-std::string LabelFeatScoreProducer::GetScoreProducerWeightShortName(unsigned) const
+std::string LabelFeatScoreProducer::GetScoreProducerWeightShortName() const
 {
-  return "cntlbl";
+  return "lblft";
 }
 
 size_t LabelFeatScoreProducer::GetNumScoreComponents() const
