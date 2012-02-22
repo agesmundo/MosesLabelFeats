@@ -11,11 +11,11 @@ namespace Moses
 /** Binary feature to detect presence of instances of:
  * (sourceConnective, Label, targetConnective)
  */
-class ConnectivesLabelsScoreProducer : public StatelessFeatureFunction
+class LabelFeatScoreProducer : public StatelessFeatureFunction
 {
 public:
 //	ConnectivesLabelsScoreProducer();
-	ConnectivesLabelsScoreProducer(ScoreIndexManager &scoreIndexManager);
+	LabelFeatScoreProducer(ScoreIndexManager &scoreIndexManager);
 
 
   std::string GetScoreProducerDescription(unsigned) const;

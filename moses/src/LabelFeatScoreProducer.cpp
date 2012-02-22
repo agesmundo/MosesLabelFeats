@@ -1,6 +1,6 @@
 // $Id$
 
-#include "ConnectivesLabelsScoreProducer.h"
+#include "LabelFeatScoreProducer.h"
 #include "StaticData.h"
 
 
@@ -13,7 +13,7 @@
 namespace Moses
 {
 
-ConnectivesLabelsScoreProducer::ConnectivesLabelsScoreProducer(ScoreIndexManager &scoreIndexManager){
+LabelFeatScoreProducer::LabelFeatScoreProducer(ScoreIndexManager &scoreIndexManager){
 //	const_cast<ScoreIndexManager&> (StaticData::Instance().GetScoreIndexManager()).AddScoreProducer(this);
 //	const_cast<StaticData&>(StaticData::Instance()).SetWeightsForScoreProducer(this, weights);
 	scoreIndexManager.AddScoreProducer(this);
@@ -24,24 +24,24 @@ ConnectivesLabelsScoreProducer::ConnectivesLabelsScoreProducer(ScoreIndexManager
 //  scoreIndexManager.AddScoreProducer(this);
 //}
 
-std::string ConnectivesLabelsScoreProducer::GetScoreProducerDescription(unsigned) const
+std::string LabelFeatScoreProducer::GetScoreProducerDescription(unsigned) const
 {
   return "ConnectivesLabels";
 }
 
-std::string ConnectivesLabelsScoreProducer::GetScoreProducerWeightShortName(unsigned) const
+std::string LabelFeatScoreProducer::GetScoreProducerWeightShortName(unsigned) const
 {
   return "cntlbl";
 }
 
-size_t ConnectivesLabelsScoreProducer::GetNumScoreComponents() const
+size_t LabelFeatScoreProducer::GetNumScoreComponents() const
 {
 //  This function returns returns the number of features that the component uses
 // |sourceConnectives| x |labels| x |targetConnectives|)
   return 1; //TODO : need to access list of possible connectives (source/target) and label set
 }
 
-void ConnectivesLabelsScoreProducer::Evaluate(const TargetPhrase& tp, ScoreComponentCollection* out) const
+void LabelFeatScoreProducer::Evaluate(const TargetPhrase& tp, ScoreComponentCollection* out) const
 {
 	std::vector<float> scores(this->GetNumScoreComponents() ,0);
 
