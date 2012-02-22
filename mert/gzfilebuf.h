@@ -1,5 +1,5 @@
-#ifndef _GZFILEBUF_H_
-#define _GZFILEBUF_H_
+#ifndef MERT_GZFILEBUF_H_
+#define MERT_GZFILEBUF_H_
 
 #include <streambuf>
 #include <zlib.h>
@@ -14,9 +14,11 @@ public:
           _buff+sizeof(int),     // read position
           _buff+sizeof(int));    // end position
   }
-  ~gzfilebuf() {
+
+  virtual ~gzfilebuf() {
     gzclose(_gzf);
   }
+
 protected:
   virtual int_type overflow (int_type c) {
     throw;
@@ -82,4 +84,4 @@ private:
   char _buff[_buffsize];
 };
 
-#endif  // _GZFILEBUF_H_
+#endif  // MERT_GZFILEBUF_H_

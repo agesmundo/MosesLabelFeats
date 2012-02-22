@@ -1,5 +1,5 @@
-#ifndef __TERSCORER_H__
-#define __TERSCORER_H__
+#ifndef MERT_TER_SCORER_H_
+#define MERT_TER_SCORER_H_
 
 #include <iostream>
 #include <set>
@@ -10,8 +10,6 @@
 #include "Scorer.h"
 
 using namespace std;
-
-// enum TerReferenceLengthStrategy { TER_AVERAGE, TER_SHORTEST, TER_CLOSEST };
 
 class ScoreStats;
 
@@ -27,10 +25,6 @@ public:
   virtual void setReferenceFiles(const vector<string>& referenceFiles);
   virtual void prepareStats(size_t sid, const string& text, ScoreStats& entry);
 
-  virtual void whoami() const {
-    cerr << "I AM TerScorer" << std::endl;
-  }
-
   virtual size_t NumberOfScores() const {
     // cerr << "TerScorer: " << (LENGTH + 1) << endl;
     return kLENGTH + 1;
@@ -38,15 +32,19 @@ public:
 
   virtual float calculateScore(const vector<int>& comps) const;
 
+  void whoami() const {
+    cerr << "I AM TerScorer" << std::endl;
+  }
+
 private:
   const int kLENGTH;
 
-  string javaEnv;
-  string tercomEnv;
+  string m_java_env;
+  string m_ter_com_env;
 
   // data extracted from reference files
-  vector<size_t> _reflengths;
-  vector<multiset<int> > _reftokens;
+  vector<size_t> m_ref_lengths;
+  vector<multiset<int> > m_ref_tokens;
   vector<vector<int> > m_references;
   vector<vector<vector<int> > > m_multi_references;
   string m_pid;
@@ -56,4 +54,4 @@ private:
   TerScorer& operator=(const TerScorer&);
 };
 
-#endif // __TERSCORER_H__
+#endif // MERT_TER_SCORER_H_

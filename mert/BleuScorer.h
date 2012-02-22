@@ -1,5 +1,5 @@
-#ifndef __BLEUSCORER_H__
-#define __BLEUSCORER_H__
+#ifndef MERT_BLEU_SCORER_H_
+#define MERT_BLEU_SCORER_H_
 
 #include <iostream>
 #include <string>
@@ -11,9 +11,6 @@
 #include "ScopedVector.h"
 
 using namespace std;
-
-enum BleuReferenceLengthStrategy { BLEU_AVERAGE, BLEU_SHORTEST, BLEU_CLOSEST };
-
 
 /**
  * Bleu scoring
@@ -33,6 +30,12 @@ public:
   }
 
 private:
+  enum ReferenceLengthType {
+    AVERAGE,
+    SHORTEST,
+    CLOSEST,
+  };
+
   //Used to construct the ngram map
   struct CompareNgrams {
     bool operator()(const vector<int>& a, const vector<int>& b) const {
@@ -57,7 +60,6 @@ private:
   typedef map<vector<int>,int,CompareNgrams> counts_t;
   typedef map<vector<int>,int,CompareNgrams>::iterator counts_iterator;
   typedef map<vector<int>,int,CompareNgrams>::const_iterator counts_const_iterator;
-  typedef ScopedVector<counts_t> refcounts_t;
 
   /**
    * Count the ngrams of each type, up to the given length in the input line.
@@ -67,15 +69,15 @@ private:
   void dump_counts(counts_t& counts) const;
 
   const int kLENGTH;
-  BleuReferenceLengthStrategy _refLengthStrategy;
+  ReferenceLengthType m_ref_length_type;
 
   // data extracted from reference files
-  refcounts_t _refcounts;
-  vector<vector<size_t> > _reflengths;
+  ScopedVector<counts_t> m_ref_counts;
+  vector<vector<size_t> > m_ref_lengths;
 
   // no copying allowed
   BleuScorer(const BleuScorer&);
   BleuScorer& operator=(const BleuScorer&);
 };
 
-#endif  // __BLEUSCORER_H__
+#endif  // MERT_BLEU_SCORER_H_

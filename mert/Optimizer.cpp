@@ -38,13 +38,13 @@ void Optimizer::SetScorer(Scorer *_scorer)
   scorer = _scorer;
 }
 
-void Optimizer::SetFData(FeatureData *_FData)
+void Optimizer::SetFData(FeatureDataHandle _FData)
 {
   FData = _FData;
 }
 
 Optimizer::Optimizer(unsigned Pd, vector<unsigned> i2O, vector<parameter_t> start, unsigned int nrandom)
-    : scorer(NULL), FData(NULL), number_of_random_directions(nrandom)
+    : scorer(NULL), FData(), number_of_random_directions(nrandom)
 {
   // Warning: the init vector is a full set of parameters, of dimension pdim!
   Point::pdim = Pd;
@@ -496,7 +496,7 @@ vector<string> OptimizerFactory::GetTypeNames()
   return typenames;
 }
 
-OptimizerFactory::OptType OptimizerFactory::GetOType(string type)
+OptimizerFactory::OptType OptimizerFactory::GetOType(const string& type)
 {
   unsigned int thetype;
   if (typenames.empty())
@@ -507,7 +507,7 @@ OptimizerFactory::OptType OptimizerFactory::GetOType(string type)
   return((OptType)thetype);
 }
 
-Optimizer* OptimizerFactory::BuildOptimizer(unsigned dim, vector<unsigned> i2o, vector<parameter_t> start, string type, unsigned int nrandom)
+Optimizer* OptimizerFactory::BuildOptimizer(unsigned dim, vector<unsigned> i2o, vector<parameter_t> start, const string& type, unsigned int nrandom)
 {
   OptType T = GetOType(type);
   if (T == NOPTIMIZER) {

@@ -1,6 +1,6 @@
 /*
  *  Data.cpp
- *  met - Minimum Error Training
+ *  mert - Minimum Error Rate Training
  *
  *  Created by Nicola Bertoldi on 13/05/08.
  *
@@ -21,8 +21,8 @@ Data::Data()
   : theScorer(NULL),
     number_of_scores(0),
     _sparse_flag(false),
-    scoredata(NULL),
-    featdata(NULL) {}
+    scoredata(),
+    featdata() {}
 
 Data::Data(Scorer& ptr)
     : theScorer(&ptr),
@@ -34,17 +34,6 @@ Data::Data(Scorer& ptr)
 {
   TRACE_ERR("Data::score_type " << score_type << std::endl);
   TRACE_ERR("Data::Scorer type from Scorer: " << theScorer->getName() << endl);
-}
-
-Data::~Data() {
-  if (featdata) {
-    delete featdata;
-    featdata = NULL;
-  }
-  if (scoredata) {
-    delete scoredata;
-    scoredata = NULL;
-  }
 }
 
 //ADDED BY TS
@@ -128,7 +117,6 @@ void Data::remove_duplicates() {
       // }
     }
 
-    std::cerr << "removed " << nRemoved << "/" << feat_array.size() << std::endl;
 
     if (nRemoved > 0) {
 
@@ -255,8 +243,8 @@ void Data::createShards(size_t shard_count, float shard_size, const string& scor
     vector<size_t> shard_contents;
     if (shard_size == 0) {
       //split into roughly equal size shards
-      size_t shard_start = floor(0.5 + shard_id * (float)data_size / shard_count);
-      size_t shard_end = floor(0.5 + (shard_id+1) * (float)data_size / shard_count);
+      const size_t shard_start = floor(0.5 + shard_id * static_cast<float>(data_size) / shard_count);
+      const size_t shard_end = floor(0.5 + (shard_id + 1) * static_cast<float>(data_size) / shard_count);
       for (size_t i = shard_start; i < shard_end; ++i) {
         shard_contents.push_back(i);
       }

@@ -1,5 +1,5 @@
-#ifndef __MERGESCORER_H__
-#define __MERGESCORER_H__
+#ifndef MERT_MERGE_SCORER_H_
+#define MERT_MERGE_SCORER_H_
 
 #include <iostream>
 #include <set>
@@ -9,8 +9,6 @@
 #include "Scorer.h"
 
 using namespace std;
-
-// enum MergeReferenceLengthStrategy { MERGE_AVERAGE, MERGE_SHORTEST, MERGE_CLOSEST };
 
 class PerScorer;
 class ScoreStats;
@@ -25,8 +23,9 @@ public:
 
   virtual void setReferenceFiles(const vector<string>& referenceFiles);
   virtual void prepareStats(size_t sid, const string& text, ScoreStats& entry);
-  virtual void whoami() const {
-    cerr << "I AM MergeScorer" << std::endl;
+
+  void whoami() const {
+    cerr << "I AM MergeScorer" << endl;
   }
 
 protected:
@@ -36,18 +35,9 @@ protected:
  private:
   const int kLENGTH;
 
-  string javaEnv;
-  string tercomEnv;
-
-  // data extracted from reference files
-  vector<size_t> _reflengths;
-  vector<multiset<int> > _reftokens;
-  vector<vector<int> > m_references;
-  string m_pid;
-
   // no copying allowed
   MergeScorer(const MergeScorer&);
   MergeScorer& operator=(const MergeScorer&);
 };
 
-#endif  //__TERSCORER_H
+#endif  // MERT_MERGE_SCORER_H_

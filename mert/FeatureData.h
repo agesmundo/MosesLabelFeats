@@ -1,13 +1,13 @@
 /*
  *  FeatureData.h
- *  met - Minimum Error Training
+ *  mert - Minimum Error Rate Training
  *
  *  Created by Nicola Bertoldi on 13/05/08.
  *
  */
 
-#ifndef FEATURE_DATA_H
-#define FEATURE_DATA_H
+#ifndef MERT_FEATURE_DATA_H_
+#define MERT_FEATURE_DATA_H_
 
 using namespace std;
 
@@ -52,11 +52,12 @@ public:
     return array_.at(idx);
   }
 
-  inline bool exists(const std::string& sent_idx) {
+  inline bool exists(const std::string& sent_idx) const {
     return exists(getIndex(sent_idx));
   }
-  inline bool exists(int sent_idx) {
-    return (sent_idx>-1 && sent_idx<(int) array_.size())?true:false;
+
+  inline bool exists(int sent_idx) const {
+    return (sent_idx > -1 && sent_idx < static_cast<int>(array_.size())) ? true : false;
   }
 
   inline FeatureStats& get(size_t i, size_t j) {
@@ -135,6 +136,9 @@ public:
   }
 
   void setFeatureMap(const std::string& feat);
+
+  /* For debugging */
+  std::string ToString() const;
 };
 
-#endif  // FEATURE_DATA_H
+#endif  // MERT_FEATURE_DATA_H_

@@ -1,6 +1,6 @@
 /*
  *  FeatureStats.cpp
- *  met - Minimum Error Training
+ *  mert - Minimum Error Rate Training
  *
  *  Created by Nicola Bertoldi on 13/05/08.
  *
@@ -46,7 +46,7 @@ void SparseVector::set(const string& name, FeatureStatsType value) {
 
 void SparseVector::write(ostream& out, const string& sep) const {
   for (fvector_t::const_iterator i = fvector_.begin(); i != fvector_.end(); ++i) {
-    if (abs((float)(i->second)) < 0.00001) continue;
+    if (abs(i->second) < 0.00001) continue;
     string name = id2name_[i->first];
     out << name << sep << i->second << " ";
   }

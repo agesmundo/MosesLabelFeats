@@ -1,8 +1,9 @@
-#ifndef OPTIMIZER_H
-#define OPTIMIZER_H
+#ifndef MERT_OPTIMIZER_H_
+#define MERT_OPTIMIZER_H_
 
 #include <vector>
 #include <string>
+#include "Data.h"
 #include "FeatureData.h"
 #include "Scorer.h"
 #include "Types.h"
@@ -20,13 +21,13 @@ class Optimizer
 {
 protected:
   Scorer *scorer;      // no accessor for them only child can use them
-  FeatureData *FData;  // no accessor for them only child can use them
+  FeatureDataHandle FData;  // no accessor for them only child can use them
   unsigned int number_of_random_directions;
 
 public:
   Optimizer(unsigned Pd, vector<unsigned> i2O, vector<parameter_t> start, unsigned int nrandom);
   void SetScorer(Scorer *_scorer);
-  void SetFData(FeatureData *_FData);
+  void SetFData(FeatureDataHandle _FData);
   virtual ~Optimizer();
 
   unsigned size() const {
@@ -108,7 +109,7 @@ class OptimizerFactory
 {
 public:
   static vector<string> GetTypeNames();
-  static Optimizer* BuildOptimizer(unsigned dim, vector<unsigned> tooptimize, vector<parameter_t> start, string type, unsigned int nrandom);
+  static Optimizer* BuildOptimizer(unsigned dim, vector<unsigned> tooptimize, vector<parameter_t> start, const string& type, unsigned int nrandom);
 
 private:
   OptimizerFactory() {}
@@ -122,9 +123,13 @@ private:
     NOPTIMIZER
   };
 
-  static OptType GetOType(string);
-  static vector<string> typenames;
+  // Get optimizer type.
+  static OptType GetOType(const string& type);
+
+  // Setup optimization types.
   static void SetTypeNames();
+
+  static vector<string> typenames;
 };
 
 #endif  // OPTIMIZER_H

@@ -1043,7 +1043,7 @@ sub execute_steps {
 		    $DO{$i}++;
 		    print "qsub\n";
 		    my $qsub_args = &get_qsub_args($DO_STEP[$i]);
-		    `qsub $qsub_args -e $step.STDERR $step -o $step.STDOUT`;
+		    `qsub $qsub_args -e $step.STDERR -o $step.STDOUT $step`;
 		}
 
 		# execute in fork
@@ -1819,8 +1819,8 @@ sub define_training_create_config {
       }
     }
   }
-  shift @LM;
   }
+  shift @LM; # remove interpolated lm
 
 	die("ERROR: number of defined LM sets (".(scalar @LM_SETS).":".join(",",@LM_SETS).") and LM files (".(scalar @LM).":".join(",",@LM).") does not match")
 	    unless scalar @LM == scalar @LM_SETS;
@@ -2693,7 +2693,7 @@ sub get_default_file {
 
 sub long_file_name {
     my ($file,$module,$set) = @_;
-    return $file if $file =~ /^\//;
+    return $file if $file =~ /^\// || $file =~ / \//;
 
     if ($file !~ /\//) {
 	my $dir = $module;
