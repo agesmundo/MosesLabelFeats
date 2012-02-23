@@ -49,6 +49,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <boost/thread.hpp>
 #endif
 
+//label feat
+#include "LabelFeatScoreProducer.h"
+
 using namespace std;
 
 namespace Moses
@@ -300,13 +303,12 @@ bool StaticData::LoadData(Parameter *parameter)
 
   // word penalties
   for (size_t i = 0; i < m_parameter->GetParam("weight-w").size(); ++i) {
-    float weightWordPenalty       = Scan<float>( m_parameter->GetParam("weight-w")[i] );
+    float weightWordPenalty = Scan<float>( m_parameter->GetParam("weight-w")[i] );
     m_wordPenaltyProducers.push_back(new WordPenaltyProducer(m_scoreIndexManager));
     m_allWeights.push_back(weightWordPenalty);
   }
 
-
-  float weightUnknownWord				= (m_parameter->GetParam("weight-u").size() > 0) ? Scan<float>(m_parameter->GetParam("weight-u")[0]) : 1;
+  float weightUnknownWord = (m_parameter->GetParam("weight-u").size() > 0) ? Scan<float>(m_parameter->GetParam("weight-u")[0]) : 1;
   m_unknownWordPenaltyProducer = new UnknownWordPenaltyProducer(m_scoreIndexManager);
   m_allWeights.push_back(weightUnknownWord);
 
@@ -502,6 +504,7 @@ bool StaticData::LoadData(Parameter *parameter)
 	}
 #endif
 	
+  if (!LoadLabelFeats()) return false;//label feat
   if (!LoadLexicalReorderingModel()) return false;
   if (!LoadLanguageModels()) return false;
   if (!LoadGenerationTables()) return false;
@@ -638,6 +641,7 @@ StaticData::~StaticData()
   RemoveAllInColl(m_wordPenaltyProducers);
   RemoveAllInColl(m_distortionScoreProducers);
   m_languageModel.CleanUp();
+  RemoveAllInColl(m_labelFeatScoreProducers);//label feat
 
   // delete trans opt
   ClearTransOptionCache();
@@ -706,6 +710,46 @@ StaticData::~StaticData()
 
   }
 #endif
+
+  //label feat
+  bool StaticData::LoadLabelFeats()
+  {
+	  vector<string> lbls;
+	  string parNameLblsFile("labels-set-file");
+	  if (!File2Lines(parNameLblsFile,lbls)) return false;//label feat
+
+
+//	  target-words-file
+
+		//TODO http://www.statmt.org/moses/?n=Moses.FeatureFunctions
+		//load file with lbl set, add a feat for each entry
+		//consider adding params in moses.ini as for weight-w
+		//check what other operations are done for weight-w
+	  return true;
+  }
+  bool StaticData::File2Lines(const string& param, vector<string>& lines ){
+	  const vector<string> lblFeatsParam=m_parameter->GetParam(param);
+	  if(lblFeatsParam.size()==0)return true;
+	  VERBOSE(1, "Loading label features...\n");
+	  if(lblFeatsParam.size()==1){
+		  VERBOSE(1, "\'labels-set-file\' : "<<lblFeatsParam[0]);
+	  }else{
+		  VERBOSE(1, "\nERROR: \'"<< param <<"\' parameter must specify a single file");
+		  return false;
+	  }
+
+	  if(!FileExists(lblFeatsParam[0])){
+		  VERBOSE(1, "\nERROR (file not found): \'"<< param << "\' : "<<lblFeatsParam[0]);
+		  return false;
+	  }
+
+	  InputFileStream file(lblFeatsParam[0]);
+	  string line("");
+	  while(!getline(file, line).eof()) {
+		  lines.push_back(line);//TODO AG add trim
+	  }
+	  return true;
+  }
 
 bool StaticData::LoadLexicalReorderingModel()
 {

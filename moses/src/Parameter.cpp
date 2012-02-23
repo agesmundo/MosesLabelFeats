@@ -146,6 +146,10 @@ Parameter::Parameter()
   AddParam("alignment-output-file", "print output word alignments into given file");
   AddParam("sort-word-alignment", "Sort word alignments for more consistent display. 0=no sort (default), 1=target order");
   AddParam("start-translation-id", "Id of 1st input. Default = 0");
+
+  //label feat
+  AddParam("labels-set-file", "File containing the set of labels (file format: one label per line, no spaces).");
+  AddParam("target-words-file", "File containing the set of target word to consider in pair with labels (file format: one label per line, no spaces).");
 }
 
 Parameter::~Parameter()

@@ -63,6 +63,9 @@ class SyntacticLanguageModel;
 #endif
 class TranslationSystem;
 
+//label feat
+class LabelFeatScoreProducer;
+
 typedef std::pair<std::string, float> UnknownLHSEntry;
 typedef std::vector<UnknownLHSEntry>  UnknownLHSList;
 
@@ -138,6 +141,7 @@ protected:
   std::vector<WordPenaltyProducer*> m_wordPenaltyProducers;
   std::vector<DistortionScoreProducer *> m_distortionScoreProducers;
   UnknownWordPenaltyProducer *m_unknownWordPenaltyProducer;
+  std::vector<LabelFeatScoreProducer*> m_labelFeatScoreProducers;//label feat
   bool m_reportSegmentation;
   bool m_reportAllFactors;
   bool m_reportAllFactorsNBest;
@@ -229,6 +233,8 @@ protected:
   bool LoadGenerationTables();
   //! load decoding steps
   bool LoadDecodeGraphs();
+  bool LoadLabelFeats();//label feat
+  bool File2Lines(const std::string& param, std::vector<std::string>& lines );//label feat
   bool LoadLexicalReorderingModel();
   bool LoadGlobalLexicalModel();
   void ReduceTransOptCache() const;
